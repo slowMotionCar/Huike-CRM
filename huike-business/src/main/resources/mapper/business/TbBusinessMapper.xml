@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huike.business.mapper.TbBusinessMapper">
+
+    <resultMap id="BaseResultMap" type="com.huike.business.domain.TbBusiness">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="channel" column="channel" jdbcType="VARCHAR"/>
+        <result property="activityId" column="activity_id" jdbcType="BIGINT"/>
+        <result property="provinces" column="provinces" jdbcType="VARCHAR"/>
+        <result property="city" column="city" jdbcType="VARCHAR"/>
+        <result property="sex" column="sex" jdbcType="CHAR"/>
+        <result property="age" column="age" jdbcType="INTEGER"/>
+        <result property="weixin" column="weixin" jdbcType="VARCHAR"/>
+        <result property="qq" column="qq" jdbcType="VARCHAR"/>
+        <result property="level" column="level" jdbcType="CHAR"/>
+        <result property="subject" column="subject" jdbcType="CHAR"/>
+        <result property="courseId" column="course_id" jdbcType="BIGINT"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="occupation" column="occupation" jdbcType="VARCHAR"/>
+        <result property="education" column="education" jdbcType="CHAR"/>
+        <result property="job" column="job" jdbcType="CHAR"/>
+        <result property="salary" column="salary" jdbcType="VARCHAR"/>
+        <result property="major" column="major" jdbcType="VARCHAR"/>
+        <result property="expectedSalary" column="expected_salary" jdbcType="VARCHAR"/>
+        <result property="reasons" column="reasons" jdbcType="VARCHAR"/>
+        <result property="plan" column="plan" jdbcType="VARCHAR"/>
+        <result property="planTime" column="plan_time" jdbcType="TIMESTAMP"/>
+        <result property="otherIntention" column="other_intention" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="CHAR"/>
+        <result property="nextTime" column="next_time" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdateTime" column="last_update_time" jdbcType="TIMESTAMP"/>
+        <result property="clueId" column="clue_id" jdbcType="BIGINT"/>
+        <result property="transfer" column="transfer" jdbcType="CHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,name,phone,
+        channel,activity_id,provinces,
+        city,sex,age,
+        weixin,qq,level,
+        subject,course_id,create_by,
+        create_time,occupation,education,
+        job,salary,major,
+        expected_salary,reasons,plan,
+        plan_time,other_intention,status,
+        next_time,last_update_time,clue_id,
+        transfer,remark,end_time
+    </sql>
+    <update id="updateBusinessEndTimeById">
+        update huike_crm.tb_business set end_time = #{endDate} where id = #{assingId}
+    </update>
+
+    <!--根据id查询商机表：TbBusiness selectBusinessById(String id);-->
+    <select id="selectBusinessById" resultType="com.huike.business.domain.TbBusiness">
+        <include refid="Base_Column_List"></include>
+        FROM tb_business
+        WHERE id = #{id}
+    </select>
+
+    <!--分页查询商机列表：-->
+    <!--<select id="pageSelectBusiness" resultType="com.huike.business.domain.dto.TbBusinessDTODTO">
+        <include refid="Base_Column_List"></include>
+        FROM tb_business
+        <where>
+            <if test=" name != null and name != '' ">
+                name = #{name}
+            </if>
+            <if test=" phone != null and phone != '' ">
+                AND phone = #{phone}
+            </if>
+            <if test=" owner != null and owner != '' ">
+                AND owner = #{owner}
+            </if>
+            <if test=" status != null and status != '' ">
+                AND status = #{status}
+            </if>
+            <if test=" beginCreateTime != null and beginCreateTime != '' and endCreateTime != null and endCreateTime != '' ">
+                AND create_time BETWEEN #{beginCreateTime} AND #{endCreateTime}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>-->
+
+</mapper>

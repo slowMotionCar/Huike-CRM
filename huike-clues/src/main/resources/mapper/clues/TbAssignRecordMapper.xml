@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huike.clues.mapper.TbAssignRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.huike.clues.domain.TbAssignRecord">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="assignId" column="assign_id" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <result property="deptId" column="dept_id" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="latest" column="latest" jdbcType="CHAR"/>
+        <result property="type" column="type" jdbcType="CHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,assign_id,user_id,
+        user_name,dept_id,create_time,
+        create_by,latest,type
+    </sql>
+    <insert id="insertTbAssignRecord">
+        insert into tb_assign_record
+        values (#{id}, #{assignId}, #{userId}, #{userName}, #{deptId}, #{createTime}, #{createBy}, #{latest}, #{type})
+    </insert>
+    <update id="updateTbAssignRecord">
+        update huike_crm.tb_assign_record
+        set dept_id     = #{deptId},
+            user_name   = #{userName},
+            create_time = #{createTime}
+        where id = #{userId};
+
+</update>
+
+    <!--根据id查询分类记录：TbAssignRecord selectAssignRecordByAssignId(Long assignId);-->
+    <select id="selectAssignRecordByAssignId" resultType="com.huike.clues.domain.TbAssignRecord"
+            parameterType="java.lang.Long">
+        SELECT id,
+               assign_id,
+               user_id,
+               user_name,
+               dept_id,
+               create_time,
+               create_by,
+               latest,
+               type
+        FROM tb_assign_record
+        WHERE assign_id = #{assignId};
+    </select>
+    <select id="countClueNumByUserId" resultType="java.lang.Integer">
+        select count(*)
+        from huike_crm.tb_assign_record tar
+                 join huike_crm.tb_clue c on tar.assign_id = c.id
+        where tar.user_id = #{userId}
+          and tar.latest = '1'
+          and tar.type = '0'
+          and c.status in ('1', '2');
+
+    </select>
+    <select id="countBusinessNumByUserId" resultType="java.lang.Integer">
+        select count(1)
+        from huike_crm.tb_assign_record tar
+                 join huike_crm.tb_business b on tar.assign_id = b.id
+        where tar.user_id = #{userId}
+          and tar.latest = '1'
+          and tar.type = '1'
+          and b.status in ('1', '2');
+    </select>
+    <select id="selectByCondition" resultType="com.huike.clues.domain.TbAssignRecord">
+        select *
+        from huike_crm.tb_assign_record
+        where type = #{type}
+          and latest = #{latest}
+          and user_id = #{userId};
+
+    </select>
+</mapper>

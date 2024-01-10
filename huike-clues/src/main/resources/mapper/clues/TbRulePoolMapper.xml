@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huike.clues.mapper.TbRulePoolMapper">
+
+    <resultMap id="BaseResultMap" type="com.huike.clues.domain.TbRulePool">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="limitTime" column="limit_time" jdbcType="INTEGER"/>
+            <result property="limitTimeType" column="limit_time_type" jdbcType="CHAR"/>
+            <result property="warnTime" column="warn_time" jdbcType="INTEGER"/>
+            <result property="warnTimeType" column="warn_time_type" jdbcType="CHAR"/>
+            <result property="repeatGetTime" column="repeat_get_time" jdbcType="INTEGER"/>
+            <result property="repeatType" column="repeat_type" jdbcType="CHAR"/>
+            <result property="maxNunmber" column="max_nunmber" jdbcType="INTEGER"/>
+            <result property="type" column="type" jdbcType="CHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,limit_time,limit_time_type,
+        warn_time,warn_time_type,repeat_get_time,
+        repeat_type,max_nunmber,type
+    </sql>
+    <update id="updateClueRule">
+        update tb_rule_pool
+        <set>
+            <if test="limitTime!=null">limit_time=#{limitTime},</if>
+            <if test="limitTimeType!=null and limitTimeType!=''">limit_time_type=#{limitTimeType},</if>
+            <if test="warnTime!=null">warn_time=#{warnTime},</if>
+            <if test="warnTimeType!=null and warnTimeType!=''">warn_time_type=#{warnTimeType},</if>
+            <if test="repeatGetTime!=null">repeat_get_time=#{repeatGetTime},</if>
+            <if test="repeatType!=null and repeatType!=''">repeat_type=#{repeatType},</if>
+            <if test="maxNunmber!=null">max_nunmber=#{maxNunmber},</if>
+        </set>
+        where type =#{type}
+    </update>
+    <select id="selectTbRulePoolByType" resultType="com.huike.clues.domain.TbRulePool">
+        select * from huike_crm.tb_rule_pool where type = #{type}
+    </select>
+</mapper>

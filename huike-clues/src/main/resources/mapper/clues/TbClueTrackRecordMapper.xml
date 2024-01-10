@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huike.clues.mapper.TbClueTrackRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.huike.clues.domain.TbClueTrackRecord">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="clueId" column="clue_id" jdbcType="VARCHAR"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="subject" column="subject" jdbcType="CHAR"/>
+            <result property="record" column="record" jdbcType="VARCHAR"/>
+            <result property="level" column="level" jdbcType="CHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="type" column="type" jdbcType="CHAR"/>
+            <result property="falseReason" column="false_reason" jdbcType="CHAR"/>
+            <result property="nextTime" column="next_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,clue_id,create_by,
+        subject,record,level,
+        create_time,type,false_reason,
+        next_time
+    </sql>
+    <insert id="insertClueTrackRecord">
+        insert into tb_clue_track_record values (#{id},#{clueId},#{createBy},#{subject},#{record},#{level},#{createTime},#{type},#{falseReason},#{nextTime})
+    </insert>
+</mapper>

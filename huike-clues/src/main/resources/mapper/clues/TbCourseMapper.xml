@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huike.clues.mapper.TbCourseMapper">
+
+    <resultMap id="BaseResultMap" type="com.huike.clues.domain.TbCourse">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="code" column="code" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="subject" column="subject" jdbcType="CHAR"/>
+            <result property="price" column="price" jdbcType="INTEGER"/>
+            <result property="applicablePerson" column="applicable_person" jdbcType="CHAR"/>
+            <result property="info" column="info" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="is_delete" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,code,name,
+        subject,price,applicable_person,
+        info,create_time,is_delete
+    </sql>
+    <update id="updateByCondithon">
+        update tb_course
+            <set>
+
+                    <if test="code != null and code!=''"> code=#{code}, </if>
+                    <if test="name != null and name!=''"> name=#{name}, </if>
+                    <if test="subject != null and subject!=''"> subject=#{subject}, </if>
+                    <if test="price != null"> price=#{price}, </if>
+                    <if test="applicablePerson != null and applicablePerson!=''"> applicable_person=#{applicablePerson}, </if>
+                    <if test="info != null and info!=''"> info=#{info}, </if>
+                    <if test="createTime != null"> create_time=#{createTime}, </if>
+
+            </set>
+        where id=#{id}
+    </update>
+    <select id="selectCourseListPage" resultType="com.huike.clues.domain.TbCourse">
+        select * from tb_course
+        <where>
+            <if test="code!=null">and code=#{code}</if>
+            <if test="name!=null and name!=''">and name=#{name}</if>
+            <if test="applicablePerson!=null and applicablePerson!=''" >and applicable_person=#{applicablePerson}</if>
+            <if test="subject!=null and subject!=''">and subject=#{subject}</if>
+            <if test="beginCreateTime!=null">and DATE(create_time) &gt;= #{beginCreateTime}</if>
+            <if test="endCreateTime!=null">and DATE(create_time) &lt;= #{endCreateTime}</if>
+        </where>
+    </select>
+    <select id="selectBusinessByCourseId" resultType="java.lang.Integer">
+        select count(*) from tb_business where course_id=#{courseId}
+    </select>
+</mapper>

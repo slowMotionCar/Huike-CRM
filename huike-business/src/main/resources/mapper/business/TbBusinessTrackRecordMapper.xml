@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huike.business.mapper.TbBusinessTrackRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.huike.business.domain.TbBusinessTrackRecord">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="businessId" column="business_id" jdbcType="VARCHAR"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="keyItems" column="key_items" jdbcType="VARCHAR"/>
+            <result property="record" column="record" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="trackStatus" column="track_status" jdbcType="CHAR"/>
+            <result property="nextTime" column="next_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,business_id,create_by,
+        key_items,record,create_time,
+        track_status,next_time
+    </sql>
+</mapper>

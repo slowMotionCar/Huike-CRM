@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huike.contract.mapper.TbContractMapper">
+
+    <resultMap id="BaseResultMap" type="com.huike.contract.domain.TbContract">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="contractNo" column="contract_no" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="subject" column="subject" jdbcType="CHAR"/>
+        <result property="activityId" column="activity_id" jdbcType="BIGINT"/>
+        <result property="activityName" column="activity_name" jdbcType="VARCHAR"/>
+        <result property="courseId" column="course_id" jdbcType="BIGINT"/>
+        <result property="courseName" column="course_name" jdbcType="VARCHAR"/>
+        <result property="channel" column="channel" jdbcType="CHAR"/>
+        <result property="status" column="status" jdbcType="CHAR"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="deptId" column="dept_id" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="fileName" column="file_name" jdbcType="VARCHAR"/>
+        <result property="contractOrder" column="contract_order" jdbcType="FLOAT"/>
+        <result property="discountType" column="discount_type" jdbcType="VARCHAR"/>
+        <result property="coursePrice" column="course_price" jdbcType="FLOAT"/>
+        <result property="processInstanceId" column="process_instance_id" jdbcType="VARCHAR"/>
+        <result property="businessId" column="business_id" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,phone,contract_no,
+        name,subject,activity_id,
+        activity_name,course_id,course_name,
+        channel,status,create_by,
+        dept_id,create_time,file_name,
+        contract_order,discount_type,course_price,
+        process_instance_id,business_id
+    </sql>
+    <select id="selectContract" resultType="com.huike.contract.domain.TbContract">
+        select * from tb_contract
+        <where>
+            <!-- 使用合适的比较运算符将条件连接起来 -->
+            <if test="beginCreateTime != null and beginCreateTime != '' and endCreateTime != null and endCreateTime != '' ">
+                create_time between #{beginCreateTime} and #{endCreateTime}
+            </if>
+            <if test="channel != null and channel != ''">
+                AND channel = #{channel}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                AND create_by like concat('%', #{createBy} , '%')
+            </if>
+            <if test="ids != null and ids.size() > 0">
+                <!-- 使用正确的集合大小判断 -->
+                AND dept_id IN
+                <foreach collection="ids" item="deptId" separator="," open="(" close=")">
+                    #{deptId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <select id="selectCountByDept" resultType="com.huike.contract.domain.TbContractCount">
+        select dept_id, sum(course_price) total_Amount, count(*) num from tb_contract
+        where status = '4'
+        group by dept_id
+    </select>
+    <select id="selectCountByActivity" resultType="com.huike.contract.domain.TbContractCount">
+        select activity_name channel, sum(course_price) total_Amount, count(*) num from tb_contract
+        where status = '4'
+        group by activity_name
+    </select>
+
+    <select id="ownerShipStatisticsList" resultType="com.huike.contract.domain.TbContractCount">
+        select create_by, sum(course_price) total_Amount, count(*) num from tb_contract
+        where status = '4'
+        group by create_by
+    </select>
+</mapper>
